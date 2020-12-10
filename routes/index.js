@@ -1,8 +1,15 @@
+//define constants here to use in the html
+//start server by cd to directory, then open cmd and type nodemon run start
 var express = require('express');
 var router = express.Router();
 const crypto = require('crypto');
 const password = 'androidencryption';
 const salt = 'F9DB886899A6B';
+const frontikpad = "00";
+const backikpad = "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+const rsaprivate = 'MIIEpAIBAAKCAQEAuxA9wXi7e3/OechTJkRg7Uq+zW91/xgzYCLa7UTGXGcN0rqaWLd5C79yhPYk/cQGV8/Adr6Ae5gwlK8U56KXMoPV26VrkJUlCjv2ZAc6RWXUsA3HjimFb5XXyQf7BAXaFW2eU2uHR8+Tq9g38FjJEcE5+rd+/UjM69n5ZkoiLTKSZDfgGU8S8s4M9QrzH8IIwFD38pGlVY+Ghny6/ww0AZZwSjeoUA+YnwBsbffxdzpz4A95XoMSrssNNivdgP9M502syRMBLD/JcNIY7PtTumqJJvlfpvz6RhtZ7DOvrz8Sn9pJjBuH/Z8orFF0rYzsBarQZtx7Qyo7vDamJ9sscwIDAQABAoIBAQCOs54Y2IxVczNFDf/4glNa0hlqSKxANOsEXLKcLEoSNX+DEV0rbpOF1b98FPY1LHQWSuMs8ri7EGeHFWUiK5OiMpZTYAcFnfFKtGGK/0SBqmQtBeYE2kHz1OBveIoSEJDEpgIQ60ehDYY+osxRqrmAtOIRFCho+j9xcLBkSwt1Y/0z0sOXBLBxAYaJCQQ+T0OqLnD+B6lrJDTySms/D72ur46P9bay3lH/qGX21h2qZPZ56Ym2p6tSpVlCJ2a3wkWEyDbbtMfkybVLo3+UghOrtgM72pqG8epB6Mf0y6RHew+sOPD9Vy/O9I2BOd7Hcmog0uO1oQQGPCSOW/GnKWtRAoGBAPldS+6qu3iqColQodvAbFa099Xh3kKmTySPu6xNdrwu+tOzs36F+0Ly6c7YO4qCvp291xs3RxlVRR9JUwwF+0JjD//H5tcmljOeDibIpYDBxwGbMCsbnE4p15L5cN8NMCy08gk20p8NK+wq31xLECJrYhZU5xYntKhZK8hyC2MZAoGBAMAKisI/XoAn4+TBRvJAjDF3SwuvqeZmiCqriC0OTRC5X2yE4Tr0mZ39RFQMS75DIv8JdmJcgEGT+bmjFnRc+ppBEkgDXF7mE3d+I8e+etLyXNdRtb7PkgHlLubI4JSDMfPNkEUDCHpOA/HddZkAB30u1H5cwVth0xJ9pBT6/+lrAoGAVN9+UrNlr4Igp+/7xzHNLg3WNMP1xDWaxlTtiY2sFgzfbmLBexTbGkRXdAGA8nnhqwrMRgUge+zb4/QvAe6fQE87SNGfLieCA/uN0YGFYzeRJmjNkj6JiskPCIVB94kjlnPX1W8FbQEsq+tDrsQVr8Fg1zz6kj3dbVc8YbL/UTECgYBJ8IUmbyGidDlhbS00vrd7oDOrxzHCPP32d97Rgi0X4FemP688dMrksovpVGahVdYWnf0PuA/FsAS5fdp6aQYv+Bfi1DBvdWRPYKjEEknWCGzIlnREiETuJ+CcCQG3DKBh/2apu5Y7COip6huKEiHQCATWtj3YQlzzRJ61WULJCwKBgQDUbv7PPh3ryR4GLgvHcpGDbGYkDm06JvSxJuVp2Mpg+jH7zVKCnXBCKndA5BLegmYau0M3fOsaqnYniy/Q2sndZCOaO1xTTPcRRr6Lw3/n17YYC/GHiqsldDl6rMe/kqwuD5MkvH5fTMCFMWCnAkAwaPPIG19cdFQtyaTRv6NXBA==';
+const rsapublic = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuxA9wXi7e3/OechTJkRg7Uq+zW91/xgzYCLa7UTGXGcN0rqaWLd5C79yhPYk/cQGV8/Adr6Ae5gwlK8U56KXMoPV26VrkJUlCjv2ZAc6RWXUsA3HjimFb5XXyQf7BAXaFW2eU2uHR8+Tq9g38FjJEcE5+rd+/UjM69n5ZkoiLTKSZDfgGU8S8s4M9QrzH8IIwFD38pGlVY+Ghny6/ww0AZZwSjeoUA+YnwBsbffxdzpz4A95XoMSrssNNivdgP9M502syRMBLD/JcNIY7PtTumqJJvlfpvz6RhtZ7DOvrz8Sn9pJjBuH/Z8orFF0rYzsBarQZtx7Qyo7vDamJ9sscwIDAQAB';
+//placeholder
 
 
 
@@ -11,8 +18,8 @@ router.get('/', function(req, res, next) {
    
   const scrypt = crypto.scryptSync(password, salt, 16);
   scrypt1hash = scrypt.toString('hex');
-
-  res.render('index', { title: 'Express', password, salt, scrypt1hash });
+  //render lets you import variables into the html which is index.ejs
+  res.render('index', { title: 'Express', password, salt, frontikpad, backikpad, rsaprivate, rsapublic, scrypt1hash });
 });
 
 module.exports = router;
