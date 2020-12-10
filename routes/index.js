@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
    
   const scrypt = crypto.scryptSync(password, salt, 16);
   scrypt1hash = scrypt.toString('hex');
-  //render lets you import variables into the html which is index.ejs
+  //render lets you import variables into the html file which is index.ejs
   res.render('index', { title: 'Express', password, salt, frontikpad, backikpad, rsaprivate, rsapublic, scrypt1hash });
 });
 
