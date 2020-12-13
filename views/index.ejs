@@ -13,11 +13,11 @@
     </details>
     <details>
         <summary>RSA private key</summary>
-        <p><%= rsaprivate %> </p>
+        <p><%= privateKey%></p>
     </details>
     <details>
         <summary>RSA public key</summary>
-        <p><%= rsapublic %> </p>
+        <p><%= publicKey%></p>
     </details>
 
     <p>Pass the password through scrypt encryption with the above salt to get IK1</p>
@@ -29,8 +29,21 @@
     <p>Pad IK1 to match the RSA key length</p>
     <details>
         <summary>Padded IK1</summary>
-        <p><%= frontikpad %><%= scrypt1hash %><%= backikpad %></p>
+        <p><%= ik1pad %></p>
     </details>
+
+    <p>Sign padded IK1 with RSA public key </p>
+
+
+
+
+    <p><%= rsaencrypted %></p>
+    <p><%= rsadecrypted %></p>
+
+    
+
+    
+    
 
 
 </body>
