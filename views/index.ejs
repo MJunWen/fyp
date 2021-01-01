@@ -19,6 +19,11 @@
         <summary>RSA public key</summary>
         <p><%= publicKey%></p>
     </details>
+    <details>
+        <summary>Disk Encryption Key (64 byte)</summary>
+        <p><%= dek%></p>
+    </details>
+
 
     <p>Pass the password through scrypt encryption with the above salt to get Intermediate Key 1</p>
 
@@ -40,10 +45,34 @@
 
     <p>Pass IK2 through scrypt encryption with the same salt as above to get IK3</p>
     <details>
-        <summary>IK3</summary>
+        <summary>IK3 (256 bits)</summary>
         <p><%= scrypt2hash %> </p>
     </details>
 
+    <p>Split IK3 into half,first 128 bits as the Key Encryption Key and the remaining 128 bits as the Initialisation Vector </p>
+    <details>
+        <summary>KEK</summary>
+        <p><%= kek %> </p>
+    </details>
+    <details>
+        <summary>IV</summary>
+        <p><%= iv %> </p>
+    </details>
+    <p>Use KEK and IV to sign the DEK with AES-256-GCM algorithm to get the encrypted DEK</p>
+    <p>To determine the Per File Key, the unecrypted DEK is combined with the nonce(16 byte) through AES-128-ECB</p>
+    <details>
+        <summary>Example Nonce(16 byte = 32 chars in hex)</summary>
+        <p><%= nonce1%></p>
+    </details>
+    <details>
+        <summary>AES-128-ECB(key size in bits = 128)</summary>
+        <p><%= result %> </p>
+    </details>
+    <p>Every file has its own unique nonce, so every file has a unique Per File Key</p>
+    <p>The names of the file are encrypted using AES-256-CBC-CTS with an IV of 0</p>
+    <p>The contents of the file are encrypted using AES-256-XTS</p>
+
+  
 
   
 
