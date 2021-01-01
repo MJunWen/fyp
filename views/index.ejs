@@ -20,28 +20,32 @@
         <p><%= publicKey%></p>
     </details>
 
-    <p>Pass the password through scrypt encryption with the above salt to get IK1</p>
+    <p>Pass the password through scrypt encryption with the above salt to get Intermediate Key 1</p>
 
     <details>
-        <summary>IK1</summary>
+        <summary>IK1(256 bit == 64 chars in hex)</summary>
         <p><%= scrypt1hash %> </p>
     </details>
-    <p>Pad IK1 to match the RSA key length</p>
+    <!-- <p>Pad IK1 to match the RSA key length</p>
     <details>
         <summary>Padded IK1</summary>
         <p><%= ik1pad %></p>
+    </details> -->
+    <!-- Can't sign ik1pad with RSA because says string size too long? Maybe try convert string to hex or sth -->
+    <p>Sign IK1 with RSA public key to get IK2</p>
+    <details>
+        <summary>IK2</summary>
+        <p><%= rsaencrypted %> </p>
     </details>
 
-    <p>Sign padded IK1 with RSA public key </p>
+    <p>Pass IK2 through scrypt encryption with the same salt as above to get IK3</p>
+    <details>
+        <summary>IK3</summary>
+        <p><%= scrypt2hash %> </p>
+    </details>
 
 
-    <!-- Can't sign ik1pad with RSA because says string size too long? Maybe try convert string to hex or sth -->
-
-
-
-    <p>Test RSA encryption</p>
-    <p><%= rsaencrypted %></p>
-    <p><%= rsadecrypted %></p>
+  
 
     
 

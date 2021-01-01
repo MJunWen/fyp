@@ -4,16 +4,17 @@ var express = require('express');
 var router = express.Router();
 const crypto = require('crypto');
 const password = 'androidencryption';
-const salt = 'F9DB886899A6B';
-const frontikpad = "00";
-const backikpad = "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+const salt = crypto.randomBytes(16).toString("hex")
+const frontikpad = "0";
+const backikpad = "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+//backikpad is 223 bytes of 0
 //placeholder
 
 //scrypt setup
-const scrypt = crypto.scryptSync(password, salt, 16);
+const scrypt = crypto.scryptSync(password, salt, 32);
 scrypt1hash = scrypt.toString('hex');
 
-const ik1pad = frontikpad+scrypt1hash+backikpad;
+const ik1pad = (frontikpad+scrypt1hash+backikpad);
 
 
 //RSA keys setup
@@ -37,10 +38,13 @@ const encryptedData = crypto.publicEncrypt(
 		key: publicKey,
 	},
 	// We convert the data string to a buffer using `Buffer.from`
-	Buffer.from(password)
+	Buffer.from(scrypt1hash)
 )
-
 const rsaencrypted = encryptedData.toString("base64");
+
+//IK3 setup
+const scrypt2 = crypto.scryptSync(rsaencrypted, salt, 32);
+scrypt2hash = scrypt.toString('hex');
 
 //RSA decrypt setup
 const decryptedData = crypto.privateDecrypt(
@@ -49,10 +53,6 @@ const decryptedData = crypto.privateDecrypt(
 	},
 	encryptedData
 )
-
-// The decrypted data is of the Buffer type, which we can convert to a
-// string to reveal the original data
-console.log("decrypted data: ", decryptedData.toString())
 
 const rsadecrypted = decryptedData.toString();
 
@@ -65,7 +65,7 @@ router.get('/', function(req, res, next) {
    
 
   //render lets you import variables into the html file which is index.ejs
-  res.render('index', { title: 'Express', password, salt, frontikpad, backikpad, privateKey, publicKey, scrypt1hash,  rsaencrypted, rsadecrypted,ik1pad});
+  res.render('index', { title: 'Express', password, salt, frontikpad, backikpad, privateKey, publicKey, scrypt1hash,  rsaencrypted, rsadecrypted,ik1pad,scrypt2hash});
 });
 
 module.exports = router;
