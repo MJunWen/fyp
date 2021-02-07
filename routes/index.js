@@ -72,18 +72,6 @@ cipher.setAutoPadding(false)
 result = cipher.update(src).toString('hex');
 result += cipher.final().toString('hex');
 
-
-// const result = "A";
-
-
-
-
-
-
-
-
-
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
    
