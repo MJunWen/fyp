@@ -30,15 +30,15 @@
         <summary>RSA public key</summary>
         <p><%= publicKey%></p>
     </details>
-    <p>Sign IK1 with RSA public key to get IK2</p>
+    <p>Sign IK1 with RSA public key to get IK2(2048 bits)</p>
     <details>
-        <summary>IK2</summary>
+        <summary>IK2(2048 bit == 512 chars in hex)</summary>
         <p><%= rsaencrypted %> </p>
     </details>
 
     <p>Pass IK2 through scrypt encryption with the same salt as above to get IK3</p>
     <details>
-        <summary>IK3 (256 bits)</summary>
+        <summary>IK3 (256 bits == 64 chars in hex)</summary>
         <p><%= scrypt2hash %> </p>
     </details>
 
@@ -53,7 +53,7 @@
     </details>
     <p>Use KEK and IV to sign the DEK with AES-256-GCM algorithm to get the encrypted DEK</p>
     <p>The KEK is held securely in the TEE.</p>
-    <p>To determine the Per File Key, the unecrypted DEK is combined with the nonce(16 byte) through AES-128-ECB</p>
+
     <details>
         <summary>Example Nonce(16 byte = 32 chars in hex)</summary>
         <p><%= nonce1%></p>
@@ -62,15 +62,26 @@
         <summary>Disk Encryption Key (64 byte == 128 chars in hex)</summary>
         <p><%= dek%></p>
     </details>
+    <p>The files are encrypted using ext4 filesystem. For the case of this project, the filesystem is emulated through randomly generated keys.</p>
+    <p>To determine the Per File Key, the unecrypted DEK is combined with the nonce(16 byte) through AES-128-ECB</p>
     <details>
-        <summary>AES-128-ECB(128 refers to key size of 128 that is used to encrypt)<br>
-            output size = input size = 64 byte == 128 chars in hex)</summary>
-            
-        <p><%= result %> </p>
+        <summary>Per File Key 1(128 refers to key size of 128 that is used to encrypt)<br>
+            output size = input size = 64 byte == 128 chars in hex)</summary> 
+        <p><%= pfk1 %> </p>
     </details>
     <p>Every file has its own unique nonce, so every file has a unique Per File Key</p>
     <p>The names of the file are encrypted using AES-256-CBC-CTS with an IV of 0</p>
-    <p>The contents of the file are encrypted using AES-256-XTS</p>
+    <p>The contents of the file are encrypted using AES-256-XTS<br>
+        AES-256-XTS requires a 512 bit key(twice the size of 256) which is randomly generated for this project<br>
+        AES-256-XTS also requires an IV which is usually the sector number in the ext4 filesystem. Since this project does not make use of the ext4 filesystem, the IV shall be randomly generated</p>
+        <details>
+            <summary>Randomly generated IV for AES-256-XTS ( 128 bits == 32 chars in hex)</summary> 
+            <p><%= ivforxts %> </p>
+        </details>
+    <details>
+        <summary>Encryption key for file contents (512 bits == 128 chars in hex)</summary> 
+        <p><%= encryptcontent %> </p>
+    </details>
 
   
 
