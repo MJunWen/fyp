@@ -71,6 +71,7 @@
     </details>
     <p>Every file has its own unique nonce, so every file has a unique Per File Key</p>
     <p>The names of the file are encrypted using AES-256-CBC-CTS with an IV of 0</p>
+    <p>Due to limitations of not using ext4filesystem, the filename cannot be encrypted so only the encryption of the file contents will be shown</p>
     <p>The contents of the file are encrypted using AES-256-XTS<br>
         AES-256-XTS requires a 512 bit key(twice the size of 256) which is randomly generated for this project<br>
         AES-256-XTS also requires an IV which is usually the sector number in the ext4 filesystem. Since this project does not make use of the ext4 filesystem, the IV shall be randomly generated</p>
