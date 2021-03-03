@@ -43,7 +43,7 @@ const encryptedData = crypto.publicEncrypt(
 	// We convert the data string to a buffer using `Buffer.from`
 	Buffer.from(scrypt1hash)
 )
-const rsaencrypted = encryptedData.toString("base64");
+const rsaencrypted = encryptedData.toString("hex");
 
 //IK3 setup
 const scrypt2 = crypto.scryptSync(rsaencrypted, salt, 32);
@@ -54,15 +54,16 @@ const iv = scrypt2hash.substring(32,65);
 
 
 
-//RSA decrypt setup
-const decryptedData = crypto.privateDecrypt(
-	{
-		key: privateKey,
-	},
-	encryptedData
-)
+// //RSA decrypt setup
+// const decryptedData = crypto.privateDecrypt(
+// 	{
+// 		key: privateKey,
+// 	},
+// 	encryptedData
+// )
 
-const rsadecrypted = decryptedData.toString();
+// const rsadecrypted = decryptedData.toString();
+//keep this if want to show decrypt of RSA key. Rmb to add rsadecrypted to render
 
 //Per File key Setup 1
 var key = Buffer.from(nonce1,'hex');
@@ -77,7 +78,7 @@ router.get('/', function(req, res, next) {
    
 
   //render lets you import variables into the html file which is index.ejs
-  res.render('index', { title: 'Express', password, salt,dek, frontikpad, backikpad, privateKey, publicKey, scrypt1hash,  rsaencrypted, rsadecrypted,ik1pad,scrypt2hash,kek,iv,nonce1,result});
+  res.render('index', { title: 'Express', password, salt,dek, frontikpad, backikpad, privateKey, publicKey, scrypt1hash,  rsaencrypted,ik1pad,scrypt2hash,kek,iv,nonce1,result});
 });
 
 module.exports = router;
