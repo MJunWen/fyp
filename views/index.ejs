@@ -3,6 +3,7 @@
 </head>
 
 <body>
+    <h1>FDE Section</h1>
     <p>8 bits = 2 hex = 1 byte</p>
     <details>
         <summary>Password</summary>
@@ -52,8 +53,43 @@
         <p><%= iv %> </p>
     </details>
     <p>Use KEK and IV to sign the DEK with AES-256-GCM algorithm to get the encrypted DEK</p>
-    <p>The KEK is held securely in the TEE.</p>
 
+    <details>
+        <summary>Example Disk Encryption Key for FDE (64 byte == 128 chars in hex)</summary>
+        <p><%= dek_fde%></p>
+    </details>
+
+    <details>
+        <summary>Encrypted DEK that is stored in the crypto footer (64 byte == 128 chars in hex)</summary>
+        <p><%= DEK_encrypted_FDE %> </p>
+    </details>
+
+    <br>
+    <hr>
+    <h1>FBE Section</h1>
+    <details>
+        <summary>Example Disk Encryption Key for FBE (64 byte == 128 chars in hex)</summary>
+        <p><%= dek_fbe%></p>
+    </details>
+    <p>The DEK is encrypted using AES-256-GCM. GCM requires an additional auth tag. The auth tag,key and iv are randomly generated</p>
+    <details>
+        <summary>Auth tag GCM (96 byte == 192 chars in hex)</summary>
+        <p><%= auth_tag_gcm %> </p>
+    </details>
+    <details>
+        <summary>Key GCM (32 byte == 64 chars in hex)</summary>
+        <p><%= key_gcm %> </p>
+    </details>
+    <details>
+        <summary>IV GCM (32 byte == 64 chars in hex)</summary>
+        <p><%= iv_gcm %> </p>
+    </details>
+    <details>
+        <summary>Encrypted DEK (64 byte == 128 chars in hex)</summary>
+        <p><%= DEK_encrypted_FBE %> </p>
+    </details>
+    <p>The files are encrypted using ext4 filesystem. For the case of this project, the filesystem is emulated through randomly generated keys.</p>
+    <p>To determine the Per File Key, the unecrypted DEK is combined with the nonce(16 byte) through AES-128-ECB</p>
     <details>
         <summary>Example Nonce 1(16 byte = 32 chars in hex)</summary>
         <p><%= nonce_1%></p>
@@ -62,12 +98,6 @@
         <summary>Example Nonce 2(16 byte = 32 chars in hex)</summary>
         <p><%= nonce_2%></p>
     </details>
-    <details>
-        <summary>Disk Encryption Key (64 byte == 128 chars in hex)</summary>
-        <p><%= dek%></p>
-    </details>
-    <p>The files are encrypted using ext4 filesystem. For the case of this project, the filesystem is emulated through randomly generated keys.</p>
-    <p>To determine the Per File Key, the unecrypted DEK is combined with the nonce(16 byte) through AES-128-ECB</p>
     <details>
         <summary>Per File Key 1 used for txt(128 refers to key size of 128 that is used to encrypt)<br>
             output size = input size = 64 byte == 128 chars in hex)</summary> 
@@ -79,8 +109,7 @@
         <p><%= pfk_2 %> </p>
     </details>
     <p>Every file has its own unique nonce, so every file has a unique Per File Key</p>
-    <p>The names of the file are encrypted using AES-256-CBC-CTS with an IV of 0</p>
-    <p>Due to limitations of not using ext4filesystem, the filename cannot be encrypted so only the encryption of the file contents will be shown</p>
+    <p>The names of the file are encrypted using AES-256-CBC-CTS with an IV of 0. Due to limitations of not using ext4filesystem, the filename cannot be encrypted so only the encryption of the file contents will be shown</p>
     <p>The contents of the file are encrypted using AES-256-XTS<br>
         AES-256-XTS requires a 512 bit key(twice the size of 256) which is randomly generated for this project<br>
         AES-256-XTS also requires an IV which is usually the sector number in the ext4 filesystem. Since this project does not make use of the ext4 filesystem, the IV shall be randomly generated</p>
