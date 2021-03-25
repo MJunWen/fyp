@@ -1,5 +1,6 @@
 //define constants here to use in the html
 //start server by cd to directory, then open cmd and type nodemon run start
+//Save this file to generate the encrypted and decrypted files if they are not there.
 var express = require('express');
 var router = express.Router();
 const crypto = require('crypto');
