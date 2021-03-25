@@ -19,8 +19,8 @@ const dek_fde = crypto.randomBytes(64).toString("hex")
 const dek_fbe = crypto.randomBytes(64).toString("hex")
 //Randomly generated ivs for AES-128-CBC
 //Encrypting fde file contents
-const ivforcbc_1 = crypto.randomBytes(16).toString("hex") //for txt fde
-const ivforcbc_2 = crypto.randomBytes(16).toString("hex") //for jpg fde
+const ivforcbc_1 = crypto.randomBytes(16).toString("hex") //for word fde
+const ivforcbc_2 = crypto.randomBytes(16).toString("hex") //for pdf fde
 //Randomly generated ivs for AES-256-XTS
 //Encrypting fbe file contents
 const ivforxts_1 = crypto.randomBytes(16).toString("hex") //for txt fbe
@@ -32,9 +32,9 @@ const nonce_2 = crypto.randomBytes(16).toString("hex")
 const bitkey512_1 = crypto.randomBytes(64).toString("hex") //for txt fbe
 const bitkey512_2 = crypto.randomBytes(64).toString("hex") //for jpg fbe
 //Randomly generated keys AES-256-GCM
-const auth_tag_gcm = crypto.randomBytes(96).toString("hex") //for txt fbe
-const key_gcm = crypto.randomBytes(32).toString("hex") //for jpg fbe
-const iv_gcm = crypto.randomBytes(32).toString("hex") //for jpg fbe
+const auth_tag_gcm = crypto.randomBytes(96).toString("hex") //for fbe dek
+const key_gcm = crypto.randomBytes(32).toString("hex") //for fbe dek
+const iv_gcm = crypto.randomBytes(32).toString("hex") //for fbe dek
 
 
 
@@ -165,23 +165,23 @@ function decryptfile(inputFile, outputFile,algo,key,sectornumber) {
 
 
 ////////////////////////////////////////FDE encryptions
-var filetoencrypt = "filetoencrypt.txt";
+//word folder encrypt
+var filetoencrypt = "filetoencrypt.docx";
 var encryptedfile = "filetoencryptEncrypted.txt"; //show off in txt form to show it's encrypted gibberish. If not just remove the .txt extension
-var decryptedfile = "filetoencryptDecrypted.txt";
-encryptfile(path.join(__dirname, "fde",  "text", filetoencrypt), path.join(__dirname, "fde",  "text", encryptedfile),"aes-128-cbc",key_dek_fde,iv_cbc_fde_1);
-decryptfile(path.join(__dirname, "fde", "text", encryptedfile), path.join(__dirname, "fde",  "text", decryptedfile),"aes-128-cbc",key_dek_fde,iv_cbc_fde_1);
+var decryptedfile = "filetoencryptDecrypted.docx";
+encryptfile(path.join(__dirname, "fde",  "word", filetoencrypt), path.join(__dirname, "fde",  "word", encryptedfile),"aes-128-cbc",key_dek_fde,iv_cbc_fde_1);
+decryptfile(path.join(__dirname, "fde", "word", encryptedfile), path.join(__dirname, "fde",  "word", decryptedfile),"aes-128-cbc",key_dek_fde,iv_cbc_fde_1);
 
-//jpg folder encrypt
-filetoencrypt = "filetoencrypt.jpg";
+//pdf folder encrypt
+filetoencrypt = "filetoencrypt.pdf";
 encryptedfile = "filetoencryptEncrypted.txt"; //show off in txt form to show it's encrypted gibberish. If not just remove the .txt extension
-decryptedfile = "filetoencryptDecrypted.jpg";
-encryptfile(path.join(__dirname, "fde",  "jpg", filetoencrypt), path.join(__dirname, "fde",  "jpg", encryptedfile),"aes-128-cbc",key_dek_fde,iv_cbc_fde_2);
-decryptfile(path.join(__dirname, "fde",  "jpg", encryptedfile), path.join(__dirname, "fde",  "jpg", decryptedfile),"aes-128-cbc",key_dek_fde,iv_cbc_fde_2);
+decryptedfile = "filetoencryptDecrypted.pdf";
+encryptfile(path.join(__dirname, "fde",  "pdf", filetoencrypt), path.join(__dirname, "fde",  "pdf", encryptedfile),"aes-128-cbc",key_dek_fde,iv_cbc_fde_2);
+decryptfile(path.join(__dirname, "fde",  "pdf", encryptedfile), path.join(__dirname, "fde",  "pdf", decryptedfile),"aes-128-cbc",key_dek_fde,iv_cbc_fde_2);
 
 
 
 ///////////////////////////////////////////////FBE encryptions
-//tested txt and JPG encryption and decryption works
 //text folder encrypt
 filetoencrypt = "filetoencrypt.txt";
 encryptedfile = "filetoencryptEncrypted.txt"; //show off in txt form to show it's encrypted gibberish. If not just remove the .txt extension
@@ -203,7 +203,7 @@ router.get('/', function(req, res, next) {
    
 
   //render lets you import variables into the html file which is index.ejs
-  res.render('index', { title: 'Express', password, salt,dek_fbe, dek_fde, frontikpad, backikpad, privateKey, publicKey, scrypt1hash,  rsaencrypted,ik1pad,scrypt2hash,kek,iv,DEK_encrypted_FDE,auth_tag_gcm,key_gcm,iv_gcm,DEK_encrypted_FBE,nonce_1,nonce_2,pfk_1,pfk_2,ivforxts_1,ivforxts_2,encryptcontent_1,encryptcontent_2});
+  res.render('index', { title: 'Express', password, salt,dek_fbe, dek_fde, frontikpad, backikpad, privateKey, publicKey, scrypt1hash,  rsaencrypted,ik1pad,scrypt2hash,kek,iv,DEK_encrypted_FDE,ivforcbc_1,ivforcbc_2,auth_tag_gcm,key_gcm,iv_gcm,DEK_encrypted_FBE,nonce_1,nonce_2,pfk_1,pfk_2,ivforxts_1,ivforxts_2,encryptcontent_1,encryptcontent_2});
 });
 
 module.exports = router;
